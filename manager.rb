@@ -17,6 +17,7 @@ class Manager
 		@w = weights_hash[:wnot] + eps(weights_hash[:wnot])
 		@prefs = pref_hash
 		@name = "M #{i}"
+		puts @x, @y, @z, @w
 	end
 
 	# epsilon function
@@ -28,7 +29,7 @@ class Manager
 	end
 
 	# hashes are packages/ what the mangager wants to choose between
-	# hashes can be passed in or just engineer objects??
+	# soo hashes can be passed in or just engineer objects??
 	def choose(e1, e2, c3)
 		# min sum of squares
 		# record to a file
@@ -50,9 +51,6 @@ m = Manager.new({:exp => 10, :prof => 5, :tools => 5, :comm => 5},
 
 e = Engineer.new({:exp => 10, :prof => 5, :tools => 5, :comm => 5}, 
 				"student")
-
-puts m
-puts e
 
 
 

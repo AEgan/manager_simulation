@@ -2,15 +2,15 @@
 class Engineer
 
 	def initialize(skill_hash, i)
-		@a = skill_hash[:a]
-		@b = skill_hash[:b]
-		@c = skill_hash[:c]
-		@d = skill_hash[:c]
+		@a = skill_hash[:exp]
+		@b = skill_hash[:prof]
+		@c = skill_hash[:tools]
+		@d = skill_hash[:comm]
 		@name = "E #{i}"
 	end
 
 	def years 
-		return @a 
+		return @a
 	end
 
 	def prog
