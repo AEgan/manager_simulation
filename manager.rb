@@ -46,9 +46,9 @@ class Manager
 		sum3 = sum_of_squares(e3)
 		minimum = sum1
 
-		# TO DO
+		# TO DO ... 
 		# record these results to a file
-		
+
 		if(sum1 < sum2 && sum1 < sum3)
 			return e1
 		elsif sum2 < sum1 && sum2 < sum3
