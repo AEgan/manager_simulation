@@ -8,16 +8,16 @@ class Manager
 	# attr accessors to make some things easier
 	attr_accessor :x, :y, :z, :w, :pref_weights, :prefs, :name
 
-	# v_hash = {x0, y0, z0, w0} -- basically preferences
+	# pref_hash = {x0, y0, z0, w0} -- basically preferences
 	# weights_hash = {.55, .15, .15, .15}
 	# i -- name or some kind of id
 	def initialize(pref_hash, weights_hash, i)
-		# where rand() is the tendency of a persons preferenes - the epsilons
 		# for each --> eps(x) - returns a value within + or - 10% of x
 		@x = weights_hash[:xnot] + eps(weights_hash[:xnot])
 		@y = weights_hash[:ynot] + eps(weights_hash[:ynot])
 		@z = weights_hash[:znot] + eps(weights_hash[:znot])
 		@w = weights_hash[:wnot] + eps(weights_hash[:wnot])
+
 		# made them exp prof tools and comm to be able to access them easily
 		# in the choose function
 		@pref_weights = Hash.new
@@ -26,6 +26,7 @@ class Manager
 		@pref_weights[:tools] = @z
 		@pref_weights[:comm] = @w
 		@prefs = pref_hash
+		@name = i
 	end
 
 	# epsilon function
@@ -44,7 +45,10 @@ class Manager
 		sum2 = sum_of_squares(e2)
 		sum3 = sum_of_squares(e3)
 		minimum = sum1
-		# record to a file
+
+		# TO DO
+		# record these results to a file
+		
 		if(sum1 < sum2 && sum1 < sum3)
 			return e1
 		elsif sum2 < sum1 && sum2 < sum3
