@@ -25,10 +25,7 @@ class Manager
 		@pref_weights[:prof] = @y
 		@pref_weights[:tools] = @z
 		@pref_weights[:comm] = @w
-
 		@prefs = pref_hash
-		@name = "M #{i}"
-		puts @x, @y, @z, @w
 	end
 
 	# epsilon function
@@ -47,13 +44,14 @@ class Manager
 		sum2 = sum_of_squares(e2)
 		sum3 = sum_of_squares(e3)
 		minimum = sum1
-		[sum1, sum2, sum3].each do |val|
-			if(val < minimum)
-				minimum = val
-			end
-		end
 		# record to a file
-		minimum
+		if(sum1 < sum2 && sum1 < sum3)
+			return e1
+		elsif sum2 < sum1 && sum2 < sum3
+			return e2
+		else
+			return e3
+		end
 	end
 
 	# choose method passing in engineer objects
@@ -74,33 +72,16 @@ class Manager
 
 	private
 	# helper method for choose which gets the sum of squares for the hash passed in
+	# for sum of square errors, does it matter of the engineer's skill is greater than 
+	# the preference for a manager? engineer with 10 experience would be better in that
+	# category than an engineer with 8 experience, but that's not according to this function
+	# but that could be easily changed by uncommenting the unless... I think
 	def sum_of_squares(e_hash)
 		sum = 0
 		e_hash.keys.each do |key|
-			sum += ((e_hash[key] - @prefs[key]) ** 2) * @pref_weights[key]
+			sum += ((e_hash[key] - @prefs[key]) ** 2) * @pref_weights[key] #unless e_hash[key] > @prefs[key]
 		end
 		sum
 	end
 
 end
-
-# create managers
-# mngr = []
-# 250.times do |i|
-# 		m = Manager.new(values_hash, preferences_hash, name)
-# 		mngr << m
-
-# create possibilities to pass in for choose
-
-m = Manager.new({:exp => 10, :prof => 5, :tools => 5, :comm => 5}, 
-				{:xnot => 0.55, :ynot => 0.15, :znot => 0.15, :wnot => 0.15}, 
-				"prof h")
-
-e = Engineer.new({:exp => 10, :prof => 5, :tools => 5, :comm => 5}, 
-				"student")
-
-
-
-
-
-
