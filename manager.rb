@@ -37,37 +37,33 @@ class Manager
 		return prng.rand(@negchange..@change)
 	end
 
-	# hashes are packages/ what the mangager wants to choose between
-	# soo hashes can be passed in or just engineer objects??
-	def choose(e1, e2, e3)
+	# hashes are packages/ what the manager wants to choose between
+	def min_sos(e1, e2, e3)
 		# min sum of squares
-		sum1 = sum_of_squares(e1)
-		sum2 = sum_of_squares(e2)
-		sum3 = sum_of_squares(e3)
-		minimum = sum1
-
-		# TO DO ... 
-		# record these results to a file
+		result1 = sum_of_squares(e1)
+		result2 = sum_of_squares(e2)
+		result3 = sum_of_squares(e3)
+		# minimum = result1
 
 		# record to a file
-		output = File.open('output.txt', 'a')
-		output.write "========================================\n"
-		output.write "#{@name} selecting between three choices\n"
-		output.write "e1's sum of squares is #{sum1}\n"
-		output.write "e2's sum of squares is #{sum2}\n"
-		output.write "e3's sum of squares is #{sum3}\n"
+		# output = File.open('output.csv', 'a')
+		# output.write "========================================\n"
+		# output.write "#{@name},"
+		# output.write "e1's sum of squares is #{result1}\n"
+		# output.write "e2's sum of squares is #{result2}\n"
+		# output.write "e3's sum of squares is #{result3}\n"
 
-		if(sum1 < sum2 && sum1 < sum3)
-			output.write "Choosing e1 with sum #{sum1}\n"
-			output.close
+		if(result1 < result2 && result1 < result3)
+			# output.write "Choosing e1 with sos result :: #{result1}\n"
+			# output.close
 			return e1
-		elsif sum2 < sum1 && sum2 < sum3
-			output.write "Choosing e2 with sum #{sum2}\n"
-			output.close
+		elsif result2 < result1 && result2 < result3
+			# output.write "Choosing e2 with sos result :: #{result2}\n"
+			# output.close
 			return e2
 		else
-			output.write "Choosing e3 with sum #{sum3}\n"
-			output.close
+			# output.write "Choosing e3 with sos result #{result3}\n"
+			# output.close
 			return e3
 		end
 	end
@@ -76,23 +72,33 @@ class Manager
 	# just calling the choose method above. If we want
 	# to modify it later to print out names to a file as well
 	# that shouldn't be a big issue
+
+	# anthony says --> not sure if this is the goal of the simulation
+	# the preferences dont have to "equal" what the manager wants 
+	# the preferences just have to correspond to what the manager prefers
+	# this is already captures in the sum_of_squares function?
 	def choose_engineers(e1, e2, e3)
-		min = choose(e1.skills, e2.skills, e3.skills)
-		output = File.open('output.txt', 'a')
+
+		min = min_sos(e1.skills, e2.skills, e3.skills)
+
+		output = File.open('output.csv', 'a')
+
+		output.write "#{@name},"
+
 		if(min.eql?(e1.skills))
-			output.write "Choosing #{e1.name}\n"
+			output.write "#{e1.name}," #"Choosing #{e1.name},"
 			output.close
 			return e1
 		elsif min.eql?(e2.skills)
-			output.write "Choosing #{e2.name}\n"
+			output.write "#{e2.name}," #"Choosing #{e2.name},"
 			output.close
 			return e2
 		else
-			output.write "Choosing #{e3.name}\n"
+			output.write "#{e3.name}," #"Choosing #{e3.name},"
 			output.close
 			return e3
 		end
-		#write to a file
+
 	end
 
 	private
@@ -104,7 +110,7 @@ class Manager
 	def sum_of_squares(e_hash)
 		sum = 0
 		e_hash.keys.each do |key|
-			sum += ((e_hash[key] - @prefs[key]) ** 2) * @pref_weights[key] #unless e_hash[key] > @prefs[key]
+			sum += ((e_hash[key] - @prefs[key]) ** 2) * @pref_weights[key] unless e_hash[key] > @prefs[key]
 		end
 		sum
 	end
