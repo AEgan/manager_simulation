@@ -20,13 +20,13 @@ class Manager
 
 		# made them exp prof tools and comm to be able to access them easily
 		# in the choose function
+		@name = "M #{i}"
 		@pref_weights = Hash.new
 		@pref_weights[:exp] = @x
 		@pref_weights[:prof] = @y
 		@pref_weights[:tools] = @z
 		@pref_weights[:comm] = @w
 		@prefs = pref_hash
-		@name = i
 	end
 
 	# epsilon function
@@ -49,11 +49,25 @@ class Manager
 		# TO DO ... 
 		# record these results to a file
 
+		# record to a file
+		output = File.open('output.txt', 'a')
+		output.write "========================================\n"
+		output.write "#{@name} selecting between three choices\n"
+		output.write "e1's sum of squares is #{sum1}\n"
+		output.write "e2's sum of squares is #{sum2}\n"
+		output.write "e3's sum of squares is #{sum3}\n"
+
 		if(sum1 < sum2 && sum1 < sum3)
+			output.write "Choosing e1 with sum #{sum1}\n"
+			output.close
 			return e1
 		elsif sum2 < sum1 && sum2 < sum3
+			output.write "Choosing e2 with sum #{sum2}\n"
+			output.close
 			return e2
 		else
+			output.write "Choosing e3 with sum #{sum3}\n"
+			output.close
 			return e3
 		end
 	end
@@ -64,14 +78,21 @@ class Manager
 	# that shouldn't be a big issue
 	def choose_engineers(e1, e2, e3)
 		min = choose(e1.skills, e2.skills, e3.skills)
+		output = File.open('output.txt', 'a')
 		if(min.eql?(e1.skills))
+			output.write "Choosing #{e1.name}\n"
+			output.close
 			return e1
 		elsif min.eql?(e2.skills)
+			output.write "Choosing #{e2.name}\n"
+			output.close
 			return e2
 		else
+			output.write "Choosing #{e3.name}\n"
+			output.close
 			return e3
 		end
-		#write to a file	
+		#write to a file
 	end
 
 	private
