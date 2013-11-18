@@ -29,7 +29,7 @@ end
 
 # decision bundle 1
 @e1 = Engineer.new({:exp => 8, :prof => 5, :tools => 1, :comm => 5}, "1")
-@e2 = Engineer.new({:exp => 8, :prof => 2, :tools => 5, :comm => 4},  "2")
+@e2 = Engineer.new({:exp => 8, :prof => 2, :tools => 6, :comm => 4},  "2")
 @e3 = Engineer.new({:exp => 6, :prof => 2, :tools => 3, :comm => 3},  "3")
 
 # testing the manager was created properly and fields are accessable
@@ -68,7 +68,7 @@ end
 # tools
 def check_engineer_tools
 	assert_equal 1, @e1.skills[:tools]
-	assert_equal 5, @e2.skills[:tools]
+	assert_equal 6, @e2.skills[:tools]
 	assert_equal 3, @e3.skills[:tools]
 end
 

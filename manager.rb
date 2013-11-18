@@ -8,19 +8,19 @@ class Manager
 	# attr accessors to make some things easier
 	attr_accessor :x, :y, :z, :w, :pref_weights, :prefs, :name
 
-	# pref_hash = {x0, y0, z0, w0} -- basically preferences
-	# weights_hash = {.55, .15, .15, .15}
-	# i -- name or some kind of id
+	# pref_hash	   -- concrete preferences of manager within inclusive (1..10) ex {1,2,3,10}
+	# weights_hash -- weights of each preference the manager has, sums to 1, ex {:xnot => 0.45, :ynot => 0.15, :znot => 0.25, :wnot => 0.15}
+	# i -- name or some kind of unique id
 	def initialize(pref_hash, weights_hash, i)
 		# for each --> eps(x) - returns a value within + or - 10% of x
 		@x = weights_hash[:xnot] + eps(weights_hash[:xnot])
 		@y = weights_hash[:ynot] + eps(weights_hash[:ynot])
 		@z = weights_hash[:znot] + eps(weights_hash[:znot])
 		@w = weights_hash[:wnot] + eps(weights_hash[:wnot])
+		@name = "M #{i}"
 
 		# made them exp prof tools and comm to be able to access them easily
 		# in the choose function
-		@name = "M #{i}"
 		@pref_weights = Hash.new
 		@pref_weights[:exp] = @x
 		@pref_weights[:prof] = @y
@@ -37,7 +37,32 @@ class Manager
 		return prng.rand(@negchange..@change)
 	end
 
-	# hashes are packages/ what the manager wants to choose between
+	# choose method passing in engineer objects
+	def choose_engineers(e1, e2, e3)
+
+		min = min_sos(e1.skills, e2.skills, e3.skills)
+
+		output = File.open('output.csv', 'a')
+
+		output.write "#{@name},"
+
+		if(min.eql?(e1.skills))
+			output.write "#{e1.name}," #"Choosing #{e1.name},"
+			output.close
+			return e1
+		elsif min.eql?(e2.skills)
+			output.write "#{e2.name}," #"Choosing #{e2.name},"
+			output.close
+			return e2
+		else
+			output.write "#{e3.name}," #"Choosing #{e3.name},"
+			output.close
+			return e3
+		end
+
+	end
+
+	# e#s are hashes / this fcn takes the min of the calculated sos
 	def min_sos(e1, e2, e3)
 		# min sum of squares
 		result1 = sum_of_squares(e1)
@@ -66,39 +91,6 @@ class Manager
 			# output.close
 			return e3
 		end
-	end
-
-	# choose method passing in engineer objects
-	# just calling the choose method above. If we want
-	# to modify it later to print out names to a file as well
-	# that shouldn't be a big issue
-
-	# anthony says --> not sure if this is the goal of the simulation
-	# the preferences dont have to "equal" what the manager wants 
-	# the preferences just have to correspond to what the manager prefers
-	# this is already captures in the sum_of_squares function?
-	def choose_engineers(e1, e2, e3)
-
-		min = min_sos(e1.skills, e2.skills, e3.skills)
-
-		output = File.open('output.csv', 'a')
-
-		output.write "#{@name},"
-
-		if(min.eql?(e1.skills))
-			output.write "#{e1.name}," #"Choosing #{e1.name},"
-			output.close
-			return e1
-		elsif min.eql?(e2.skills)
-			output.write "#{e2.name}," #"Choosing #{e2.name},"
-			output.close
-			return e2
-		else
-			output.write "#{e3.name}," #"Choosing #{e3.name},"
-			output.close
-			return e3
-		end
-
 	end
 
 	private
