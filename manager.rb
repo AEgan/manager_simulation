@@ -20,7 +20,7 @@ class Manager
 		@w = weights_hash[:wnot] + eps(weights_hash[:wnot])
 		# made them exp prof tools and comm to be able to access them easily
 		# in the choose function
-		@name = i
+		@name = "M #{i}"
 		@pref_weights = Hash.new
 		@pref_weights[:exp] = @x
 		@pref_weights[:prof] = @y

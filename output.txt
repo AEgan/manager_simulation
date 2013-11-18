@@ -1,13 +1,13 @@
 ========================================
-prof h selecting between three choices
+M prof h selecting between three choices
 e1's sum of squares is 0.0
-e2's sum of squares is 5.825342800469974
-e3's sum of squares is 10.43183962443503
+e2's sum of squares is 6.061234982580525
+e3's sum of squares is 10.904295613933908
 Choosing e1 with sum 0.0
 Choosing E student 1
 ========================================
-prof h selecting between three choices
+M prof h selecting between three choices
 e1's sum of squares is 0.0
-e2's sum of squares is 5.825342800469974
-e3's sum of squares is 10.43183962443503
+e2's sum of squares is 6.061234982580525
+e3's sum of squares is 10.904295613933908
 Choosing e1 with sum 0.0
