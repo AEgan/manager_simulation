@@ -38,26 +38,26 @@ class Manager
 	end
 
 	# choose method passing in engineer objects
-	def choose_engineers(e1, e2, e3)
+	def choose_engineers(eng_array)
 
-		min = min_sos(e1.skills, e2.skills, e3.skills)
+		min = min_sos(eng_array[0].skills, eng_array[1].skills, eng_array[2].skills)
 
 		output = File.open('output.csv', 'a')
 
 		output.write "#{@name},"
 
-		if(min.eql?(e1.skills))
-			output.write "#{e1.name}," #"Choosing #{e1.name},"
+		if(min.eql?(eng_array[0].skills))
+			output.write "#{eng_array[0].name}," #"Choosing #{e1.name},"
 			output.close
-			return e1
-		elsif min.eql?(e2.skills)
-			output.write "#{e2.name}," #"Choosing #{e2.name},"
+			return eng_array[0]
+		elsif min.eql?(eng_array[1].skills)
+			output.write "#{eng_array[1].name}," #"Choosing #{e2.name},"
 			output.close
-			return e2
+			return eng_array[1]
 		else
-			output.write "#{e3.name}," #"Choosing #{e3.name},"
+			output.write "#{eng_array[2].name}," #"Choosing #{e3.name},"
 			output.close
-			return e3
+			return eng_array[2]
 		end
 
 	end

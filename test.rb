@@ -27,10 +27,13 @@ end
 @m = Manager.new({:exp => 10, :prof => 5, :tools => 5, :comm => 5}, 
 				{:xnot => 0.45, :ynot => 0.15, :znot => 0.25, :wnot => 0.15}, "prof h")
 
-# decision bundle 1
-@e1 = Engineer.new({:exp => 8, :prof => 5, :tools => 1, :comm => 5}, "1")
+# engineers
+@e1 = Engineer.new({:exp => 8, :prof => 5, :tools => 1, :comm => 5},  "1")
 @e2 = Engineer.new({:exp => 8, :prof => 2, :tools => 6, :comm => 4},  "2")
 @e3 = Engineer.new({:exp => 6, :prof => 2, :tools => 3, :comm => 3},  "3")
+
+# engineer choice bundle 1
+eng_bundle_1 = [@e1, @e2, @e3]
 
 # testing the manager was created properly and fields are accessable
 def check_manager
@@ -87,7 +90,7 @@ check_engineer_tools
 check_engineer_comm
 
 puts "testing the choose_engineers method"
-puts @m.choose_engineers(@e1, @e2, @e3).skills
+puts @m.choose_engineers(eng_bundle_1).skills
 
 puts "testing the choose method"
 puts @m.min_sos(@e1.skills, @e2.skills, @e3.skills)
