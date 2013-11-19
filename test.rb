@@ -24,13 +24,23 @@ def assert_equal(exp1, exp2, message = "assertion failed")
 end
 
 # manager 1
-@m = Manager.new({:exp => 10, :prof => 5, :tools => 5, :comm => 5}, 
-				{:xnot => 0.45, :ynot => 0.15, :znot => 0.25, :wnot => 0.15}, "prof h")
+@m = Manager.new({:exp => 10, :prog => 5, :tools => 5, :comm => 5}, 
+				{:xnot => 0.55, :ynot => 0.15, :znot => 0.15, :wnot => 0.15}, "prof h")
 
 # engineers
-@e1 = Engineer.new({:exp => 8, :prof => 5, :tools => 1, :comm => 5},  "1")
-@e2 = Engineer.new({:exp => 8, :prof => 2, :tools => 6, :comm => 4},  "2")
-@e3 = Engineer.new({:exp => 6, :prof => 2, :tools => 3, :comm => 3},  "3")
+@e1 = Engineer.new({:exp => 8, :prog => 5, :tools => 1, :comm => 5},  "1")
+@e2 = Engineer.new({:exp => 8, :prog => 2, :tools => 6, :comm => 4},  "2")
+@e3 = Engineer.new({:exp => 6, :prog => 2, :tools => 3, :comm => 3},  "3")
+# @e4 = Engineer.new({:exp => 2, :prog => 1, :tools => 2, :comm => 6},  "4")
+# @e5 = Engineer.new({:exp => 5, :prog => 5, :tools => 5, :comm => 5},  "5")
+# @e6 = Engineer.new({:exp => 4, :prog => 4, :tools => 4, :comm => 6},  "6")
+# @e7 = Engineer.new({:exp => 10, :prog => 10, :tools => 10, :comm => 10},  "7")
+# @e8 = Engineer.new({:exp => 1, :prog => 2, :tools => 2, :comm => 7},  "8")
+# @e9 = Engineer.new({:exp => 9, :prog => 9, :tools => 8, :comm => 2},  "9")
+# @e10 = Engineer.new({:exp => 7, :prog => 4, :tools => 7, :comm => 7},  "10")
+# @e11 = Engineer.new({:exp => 10, :prog => 1, :tools => 4, :comm => 4},  "11")
+# @e12 = Engineer.new({:exp => 5, :prog => 5, :tools => 5, :comm => 5},  "12")
+
 
 # engineer choice bundle 1
 eng_bundle_1 = [@e1, @e2, @e3]
@@ -40,7 +50,7 @@ def check_manager
 	puts "checking manager properties"
 	assert_equal "M prof h", @m.name
 	assert_equal 10, @m.prefs[:exp]
-	assert_equal 5, @m.prefs[:prof]
+	assert_equal 5, @m.prefs[:prog]
 	assert_equal 5, @m.prefs[:tools]
 	assert_equal 5, @m.prefs[:comm]
 end
@@ -62,10 +72,10 @@ def check_engineer_exp
 end
 
 # programming proficiency
-def check_engineer_prof
-	assert_equal 5, @e1.skills[:prof]
-	assert_equal 2, @e2.skills[:prof]
-	assert_equal 2, @e3.skills[:prof]
+def check_engineer_prog
+	assert_equal 5, @e1.skills[:prog]
+	assert_equal 2, @e2.skills[:prog]
+	assert_equal 2, @e3.skills[:prog]
 end
 
 # tools
@@ -85,7 +95,7 @@ end
 check_manager
 check_engineer_names
 check_engineer_exp
-check_engineer_prof
+check_engineer_prog
 check_engineer_tools
 check_engineer_comm
 

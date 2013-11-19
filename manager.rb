@@ -23,7 +23,7 @@ class Manager
 		# in the choose function
 		@pref_weights = Hash.new
 		@pref_weights[:exp] = @x
-		@pref_weights[:prof] = @y
+		@pref_weights[:prog] = @y
 		@pref_weights[:tools] = @z
 		@pref_weights[:comm] = @w
 		@prefs = pref_hash
