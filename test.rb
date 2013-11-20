@@ -24,7 +24,7 @@ def assert_equal(exp1, exp2, message = "assertion failed")
 end
 
 # manager 1
-@m = Manager.new({:exp => 10, :prog => 5, :tools => 5, :comm => 5}, 
+@m = Manager.new({:exp => 5, :prog => 2, :tools => 3, :comm => 2}, 
 				{:xnot => 0.55, :ynot => 0.15, :znot => 0.15, :wnot => 0.15}, "prof h")
 
 # engineers
@@ -39,10 +39,10 @@ eng_bundle_1  = [@e1,	@e2,  @e3]
 def check_manager
 	puts "checking manager properties"
 	assert_equal "M prof h", @m.name
-	assert_equal 10, @m.prefs[:exp]
-	assert_equal 5, @m.prefs[:prog]
-	assert_equal 5, @m.prefs[:tools]
-	assert_equal 5, @m.prefs[:comm]
+	assert_equal 5, @m.prefs[:exp]
+	assert_equal 2, @m.prefs[:prog]
+	assert_equal 3, @m.prefs[:tools]
+	assert_equal 2, @m.prefs[:comm]
 end
 
 # tests engineer names
