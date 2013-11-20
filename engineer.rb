@@ -11,7 +11,7 @@ class Engineer
 		@prof = skill_hash[:prof]
 		@tools = skill_hash[:tools]
 		@comm = skill_hash[:comm]
-		@name = "E #{i}"
+		@name = "#{i}"
 		@skills = skill_hash
 	end
 

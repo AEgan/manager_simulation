@@ -44,18 +44,18 @@ class Manager
 
 		output = File.open('output.csv', 'a')
 
-		output.write "#{@name},"
+		# output.write "#{@name},"
 
 		if(min.eql?(eng_array[0].skills))
-			output.write "#{eng_array[0].name}," #"Choosing #{e1.name},"
+			output.write "1," #"Choosing #{e1.name},"
 			output.close
 			return eng_array[0]
 		elsif min.eql?(eng_array[1].skills)
-			output.write "#{eng_array[1].name}," #"Choosing #{e2.name},"
+			output.write "2," #"Choosing #{e2.name},"
 			output.close
 			return eng_array[1]
 		else
-			output.write "#{eng_array[2].name}," #"Choosing #{e3.name},"
+			output.write "3," #"Choosing #{e3.name},"
 			output.close
 			return eng_array[2]
 		end

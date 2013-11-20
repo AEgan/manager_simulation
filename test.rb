@@ -28,22 +28,12 @@ end
 				{:xnot => 0.55, :ynot => 0.15, :znot => 0.15, :wnot => 0.15}, "prof h")
 
 # engineers
-@e1 = Engineer.new({:exp => 8, :prog => 5, :tools => 1, :comm => 5},  "1")
-@e2 = Engineer.new({:exp => 8, :prog => 2, :tools => 6, :comm => 4},  "2")
-@e3 = Engineer.new({:exp => 6, :prog => 2, :tools => 3, :comm => 3},  "3")
-# @e4 = Engineer.new({:exp => 2, :prog => 1, :tools => 2, :comm => 6},  "4")
-# @e5 = Engineer.new({:exp => 5, :prog => 5, :tools => 5, :comm => 5},  "5")
-# @e6 = Engineer.new({:exp => 4, :prog => 4, :tools => 4, :comm => 6},  "6")
-# @e7 = Engineer.new({:exp => 10, :prog => 10, :tools => 10, :comm => 10},  "7")
-# @e8 = Engineer.new({:exp => 1, :prog => 2, :tools => 2, :comm => 7},  "8")
-# @e9 = Engineer.new({:exp => 9, :prog => 9, :tools => 8, :comm => 2},  "9")
-# @e10 = Engineer.new({:exp => 7, :prog => 4, :tools => 7, :comm => 7},  "10")
-# @e11 = Engineer.new({:exp => 10, :prog => 1, :tools => 4, :comm => 4},  "11")
-# @e12 = Engineer.new({:exp => 5, :prog => 5, :tools => 5, :comm => 5},  "12")
-
+@e1 =  Engineer.new({:exp => 1, :prog => 1, :tools => 5, :comm => 3},  "1")
+@e2 =  Engineer.new({:exp => 5, :prog => 1, :tools => 4, :comm => 4},  "2")
+@e3 =  Engineer.new({:exp => 5, :prog => 4, :tools => 1, :comm => 5},  "3")
 
 # engineer choice bundle 1
-eng_bundle_1 = [@e1, @e2, @e3]
+eng_bundle_1  = [@e1,	@e2,  @e3]
 
 # testing the manager was created properly and fields are accessable
 def check_manager
@@ -58,38 +48,38 @@ end
 # tests engineer names
 def check_engineer_names
 	puts "checking engineer names"
-	assert_equal @e1.name, "E 1"
-	assert_equal @e2.name, "E 2"
-	assert_equal @e3.name, "E 3"
+	# assert_equal @e1.name, "E 1"
+	# assert_equal @e2.name, "E 2"
+	# assert_equal @e3.name, "E 3"
 end
 
 # tests engineer attributes
 # experience
 def check_engineer_exp
-	assert_equal 8, @e1.skills[:exp]
-	assert_equal 8, @e2.skills[:exp]
-	assert_equal 6, @e3.skills[:exp]
+	assert_equal 1, @e1.skills[:exp]
+	assert_equal 5, @e2.skills[:exp]
+	assert_equal 5, @e3.skills[:exp]
 end
 
 # programming proficiency
 def check_engineer_prog
-	assert_equal 5, @e1.skills[:prog]
-	assert_equal 2, @e2.skills[:prog]
-	assert_equal 2, @e3.skills[:prog]
+	assert_equal 1, @e1.skills[:prog]
+	assert_equal 1, @e2.skills[:prog]
+	assert_equal 4, @e3.skills[:prog]
 end
 
 # tools
 def check_engineer_tools
-	assert_equal 1, @e1.skills[:tools]
-	assert_equal 6, @e2.skills[:tools]
-	assert_equal 3, @e3.skills[:tools]
+	assert_equal 5, @e1.skills[:tools]
+	assert_equal 4, @e2.skills[:tools]
+	assert_equal 1, @e3.skills[:tools]
 end
 
 # communication
 def check_engineer_comm
-	assert_equal 5, @e1.skills[:comm]
+	assert_equal 3, @e1.skills[:comm]
 	assert_equal 4, @e2.skills[:comm]
-	assert_equal 3, @e3.skills[:comm]
+	assert_equal 5, @e3.skills[:comm]
 end
 
 check_manager
