@@ -82,12 +82,303 @@ def check_engineer_comm
 	assert_equal 5, @e3.skills[:comm]
 end
 
+# checking for invalid input
+# checking manager preferences
+def check_valid_preferences
+	# exp below 1
+	begin
+		testManager = Manager.new({:exp => 0, :prog => 2, :tools => 3, :comm => 2}, 
+				{:xnot => 0.55, :ynot => 0.15, :znot => 0.15, :wnot => 0.15}, "prof h")
+		puts "TEST FAILED - the manager's preferences must be between 1 and 5"
+	rescue Exception => e
+		puts "exp preferences test passed"
+	end
+
+	# prog below 1
+	begin
+
+		testManager = Manager.new({:exp => 5, :prog => 0, :tools => 3, :comm => 2}, 
+				{:xnot => 0.55, :ynot => 0.15, :znot => 0.15, :wnot => 0.15}, "prof h")
+		puts "TEST FAILED - the manager's preferences must be between 1 and 5"
+	rescue Exception => e
+		puts "prog preferences test passed"
+	end
+
+	# tools below 1
+	begin
+		testManager = Manager.new({:exp => 5, :prog => 2, :tools => 0, :comm => 2}, 
+				{:xnot => 0.55, :ynot => 0.15, :znot => 0.15, :wnot => 0.15}, "prof h")
+		puts "TEST FAILED - the manager's preferences must be between 1 and 5"
+	rescue Exception => e
+		puts "tools preferences test passed"
+	end
+
+	# comm below 1
+	begin
+		testManager = Manager.new({:exp => 5, :prog => 2, :tools => 3, :comm => 0}, 
+				{:xnot => 0.55, :ynot => 0.15, :znot => 0.15, :wnot => 0.15}, "prof h")
+		puts "TEST FAILED - the manager's preferences must be between 1 and 5"
+	rescue Exception => e
+		puts "comm preferences test passed"
+	end
+
+	# exp above 5
+	begin
+		testManager = Manager.new({:exp => 6, :prog => 2, :tools => 3, :comm => 2}, 
+				{:xnot => 0.55, :ynot => 0.15, :znot => 0.15, :wnot => 0.15}, "prof h")
+		puts "TEST FAILED - the manager's preferences must be between 1 and 5"
+	rescue Exception => e
+		puts "exp preferences test passed"
+	end
+
+	# prog above 5
+	begin
+		testManager = Manager.new({:exp => 5, :prog => 6, :tools => 3, :comm => 2}, 
+				{:xnot => 0.55, :ynot => 0.15, :znot => 0.15, :wnot => 0.15}, "prof h")
+		puts "TEST FAILED - the manager's preferences must be between 1 and 5"
+	rescue Exception => e
+		puts "prog preferences test passed"
+	end
+
+	# tools above 5
+	begin
+		testManager = Manager.new({:exp => 5, :prog => 2, :tools => 6, :comm => 2}, 
+				{:xnot => 0.55, :ynot => 0.15, :znot => 0.15, :wnot => 0.15}, "prof h")
+		puts "TEST FAILED - the manager's preferences must be between 1 and 5"
+	rescue Exception => e
+		puts "tools preferences test passed"
+	end
+
+	# comm above 5
+	begin
+		testManager = Manager.new({:exp => 5, :prog => 2, :tools => 3, :comm => 6}, 
+				{:xnot => 0.55, :ynot => 0.15, :znot => 0.15, :wnot => 0.15}, "prof h")
+		puts "TEST FAILED - the manager's preferences must be between 1 and 5"
+	rescue Exception => e
+		puts "comm preferences test passed"
+	end
+end
+
+def check_sum_add_up
+	begin
+		testManager = Manager.new({:exp => 5, :prog => 2, :tools => 3, :comm => 2}, 
+					{:xnot => 0.65, :ynot => 0.15, :znot => 0.15, :wnot => 0.15}, "prof h")
+		puts "TEST FAILED - the manager's weights must add up to 1"
+	rescue Exception => e
+		puts "sum test passed"
+	end
+end
+
+# checking that weights can't be negative. Would check to see if they go above 1 but 
+# that'll be caught by the sum check above. We may need to change this later
+def check_valid_weights
+	# xnot below 0
+	begin
+		testManager = Manager.new({:exp => 5, :prog => 2, :tools => 3, :comm => 2}, 
+				{:xnot => -0.55, :ynot => 0.55, :znot => 0.5, :wnot => 0.5}, "prof h")
+		puts "TEST FAILED - the manager's weights must be between 0 and 1 and add to 1"
+	rescue Exception => e
+		puts "exp weight test passed"
+	end
+	# ynot below 0
+	begin
+		testManager = Manager.new({:exp => 5, :prog => 2, :tools => 3, :comm => 2}, 
+				{:xnot => 0.55, :ynot => -0.55, :znot => 0.5, :wnot => 0.5}, "prof h")
+		puts "TEST FAILED - the manager's weights must be between 0 and 1 and add to 1"
+	rescue Exception => e
+		puts "exp weight test passed"
+	end
+	# znot below 0
+	begin
+		testManager = Manager.new({:exp => 5, :prog => 2, :tools => 3, :comm => 2}, 
+				{:xnot => 0.55, :ynot => 0.5, :znot => -0.55, :wnot => 0.5}, "prof h")
+		puts "TEST FAILED - the manager's weights must be between 0 and 1 and add to 1"
+	rescue Exception => e
+		puts "exp weight test passed"
+	end
+	# wnot below 0
+	begin
+		testManager = Manager.new({:exp => 5, :prog => 2, :tools => 3, :comm => 2}, 
+				{:xnot => 0.55, :ynot => 0.5, :znot => 0.5, :wnot => -0.55}, "prof h")
+		puts "TEST FAILED - the manager's weights must be between 0 and 1 and add to 1"
+	rescue Exception => e
+		puts "exp weight test passed"
+	end
+end
+
+def check_prefs_hash_complete
+	# test without exp
+	begin
+		testManager = Manager.new({:prog => 2, :tools => 3, :comm => 2}, 
+				{:xnot => 0.55, :ynot => 0.5, :znot => -0.55, :wnot => 0.5}, "prof h")
+		puts "TEST FAILED - the manager's preferences must include :exp"
+	rescue Exception => e
+		puts "exp presence test passed"
+	end
+	# test without prog
+	begin
+		testManager = Manager.new({:exp => 5, :tools => 3, :comm => 2}, 
+				{:xnot => 0.55, :ynot => 0.5, :znot => -0.55, :wnot => 0.5}, "prof h")
+		puts "TEST FAILED - the manager's preferences must include :prog"
+	rescue Exception => e
+		puts "prog presence test passed"
+	end
+	# test without tools
+	begin
+		testManager = Manager.new({:exp => 5, :prog => 2, :comm => 2}, 
+				{:xnot => 0.55, :ynot => 0.5, :znot => -0.55, :wnot => 0.5}, "prof h")
+		puts "TEST FAILED - the manager's preferences must include :tools"
+	rescue Exception => e
+		puts "tools presence test passed"
+	end
+	# test without comm
+	begin
+		testManager = Manager.new({:exp => 5, :prog => 2, :tools => 3}, 
+				{:xnot => 0.55, :ynot => 0.5, :znot => -0.55, :wnot => 0.5}, "prof h")
+		puts "TEST FAILED - the manager's preferences must include :comm"
+	rescue Exception => e
+		puts "comm presence test passed"
+	end
+end
+
+def check_weight_hash_complete
+	# xnot must be presenet
+	begin
+		testManager = Manager.new({:exp => 5, :prog => 2, :tools => 3, :comm => 2}, 
+				{:ynot => 0.3, :znot => 0.3, :wnot => 0.4}, "prof h")
+		puts "TEST FAILED - the manager's weights must include :xnot"
+	rescue Exception => e
+		puts "xnot weight presence test passed"
+	end
+	# ynot must be presenet
+	begin
+		testManager = Manager.new({:exp => 5, :prog => 2, :tools => 3, :comm => 2}, 
+				{:xnot => 0.4, :znot => 0.3, :wnot => 0.3}, "prof h")
+		puts "TEST FAILED - the manager's weights must include :ynot"
+	rescue Exception => e
+		puts "ynot weight presence test passed"
+	end
+	# znot must be presenet
+	begin
+		testManager = Manager.new({:exp => 5, :prog => 2, :tools => 3, :comm => 2}, 
+				{:xnot => 0.4, :ynot => 0.3, :wnot => 0.3}, "prof h")
+		puts "TEST FAILED - the manager's weights must include :znot"
+	rescue Exception => e
+		puts "znot weight presence test passed"
+	end
+	# wnot must be presenet
+	begin
+		testManager = Manager.new({:exp => 5, :prog => 2, :tools => 3, :comm => 2}, 
+				{:xnot => 0.4, :ynot => 0.3, :znot => 0.3}, "prof h")
+		puts "TEST FAILED - the manager's weights must include :wnot"
+	rescue Exception => e
+		puts "wnot weight presence test passed"
+	end
+end
+
+def check_engineer_skills_range
+	# exp not below 1
+	begin
+		testEngineer = Engineer.new({:exp => 0, :prog => 1, :tools => 5, :comm => 3},  "1")
+		puts "TEST FAILED - the engineer must have an :exp skill value between 1 and 5"
+	rescue Exception => e
+		puts "engineer exp test passed"
+	end
+	# prog not below 1
+	begin
+		testEngineer = Engineer.new({:exp => 1, :prog => 0, :tools => 5, :comm => 3},  "1")
+		puts "TEST FAILED - the engineer must have a :prog skill value between 1 and 5"
+	rescue Exception => e
+		puts "engineer prog test passed"
+	end
+	# tools not below 1
+	begin
+		testEngineer = Engineer.new({:exp => 1, :prog => 1, :tools => 0, :comm => 3},  "1")
+		puts "TEST FAILED - the engineer must have a :tools skill value between 1 and 5"
+	rescue Exception => e
+		puts "engineer tools test passed"
+	end
+	# comm not below 1
+	begin
+		testEngineer = Engineer.new({:exp => 1, :prog => 1, :tools => 5, :comm => 0},  "1")
+		puts "TEST FAILED - the engineer must have a :comm skill value between 1 and 5"
+	rescue Exception => e
+		puts "engineer comm test passed"
+	end
+		# exp not above 5
+	begin
+		testEngineer = Engineer.new({:exp => 6, :prog => 1, :tools => 5, :comm => 3},  "1")
+		puts "TEST FAILED - the engineer must have an :exp skill value between 1 and 5"
+	rescue Exception => e
+		puts "engineer exp test passed"
+	end
+	# prog not above 5
+	begin
+		testEngineer = Engineer.new({:exp => 1, :prog => 6, :tools => 5, :comm => 3},  "1")
+		puts "TEST FAILED - the engineer must have a :prog skill value between 1 and 5"
+	rescue Exception => e
+		puts "engineer prog test passed"
+	end
+	# tools not above 5
+	begin
+		testEngineer = Engineer.new({:exp => 1, :prog => 1, :tools => 6, :comm => 3},  "1")
+		puts "TEST FAILED - the engineer must have a :tools skill value between 1 and 5"
+	rescue Exception => e
+		puts "engineer tools test passed"
+	end
+	# comm not above 5
+	begin
+		testEngineer = Engineer.new({:exp => 1, :prog => 1, :tools => 5, :comm => 6},  "1")
+		puts "TEST FAILED - the engineer must have a :comm skill value between 1 and 5"
+	rescue Exception => e
+		puts "engineer comm test passed"
+	end
+end
+
+def check_engineer_skill_presence
+	# exp present
+	begin
+		testEngineer = Engineer.new({:prog => 1, :tools => 5, :comm => 6},  "1")
+		puts "TEST FAILED - the engineer must have an :exp skill value present"
+	rescue Exception => e
+		puts "engineer exp presence test passed"
+	end
+	# prog present
+	begin
+		testEngineer = Engineer.new({:exp => 1, :tools => 5, :comm => 6},  "1")
+		puts "TEST FAILED - the engineer must have a :prog skill value present"
+	rescue Exception => e
+		puts "engineer prog presence test passed"
+	end
+	# tools present
+	begin
+		testEngineer = Engineer.new({:exp => 1, :prog => 1, :comm => 6},  "1")
+		puts "TEST FAILED - the engineer must have a :tools skill value present"
+	rescue Exception => e
+		puts "engineer tools presence test passed"
+	end
+	# comm present
+	begin
+		testEngineer = Engineer.new({:exp => 1, :prog => 1, :tools => 5},  "1")
+		puts "TEST FAILED - the engineer must have a :comm skill value present"
+	rescue Exception => e
+		puts "engineer comm presence test passed"
+	end
+end
+
 check_manager
 check_engineer_names
 check_engineer_exp
 check_engineer_prog
 check_engineer_tools
 check_engineer_comm
+check_valid_preferences
+check_sum_add_up
+check_valid_weights
+check_prefs_hash_complete
+check_weight_hash_complete
+check_engineer_skills_range
+check_engineer_skill_presence
 
 puts "testing the choose_engineers method"
 puts @m.choose_engineers(eng_bundle_1).skills
