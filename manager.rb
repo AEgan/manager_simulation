@@ -13,6 +13,41 @@ class Manager
 	# i -- name or some kind of unique id
 	def initialize(pref_hash, weights_hash, i)
 		# for each --> eps(x) - returns a value within + or - 10% of x
+
+		# weights must be between 0 and 1, checking here unless there is a better
+		# way to do it. Also checking that they add to 1
+		sum = 0
+		weights_hash.keys.each do |key|
+			if(weights_hash[key] < 0 || weights_hash[key] > 1)
+				raise Exception.new("Manager weights must be between 0 and 1")
+			else
+				sum += weights_hash[key]
+			end
+		end
+
+		# make sure the sum adds to 1
+		if sum != 1
+			raise Exception.new("Manager weights must add up to 1")
+		end
+
+		# preferences have to be on a 1 to 5 scale, so I'm checking them here
+		pref_hash.keys.each do |key|
+			if(pref_hash[key] < 1 || pref_hash[key] > 5)
+				raise Exception.new("Manager preferences must be on a scale from 1 to 5")
+			end
+		end
+
+		# make sure pref hash has all the keys we need it to
+		[:exp, :prog, :tools, :comm].each do |key|
+			raise Exception.new("Manager must have :exp, :prog, :tools, and :comm for preferences") if pref_hash[key].nil?
+		end
+
+		# make sure the weight hash has all the keys we need it to
+		[:xnot, :ynot, :znot, :wnot].each do |key|
+			raise Exception.new("Manager must have :xnot, :ynot, :znot, :wnot as keys for weights") if weights_hash[key].nil?
+		end
+
+
 		@x = weights_hash[:xnot] + eps(weights_hash[:xnot])
 		@y = weights_hash[:ynot] + eps(weights_hash[:ynot])
 		@z = weights_hash[:znot] + eps(weights_hash[:znot])
