@@ -142,4 +142,55 @@ class Manager
 		sum
 	end
 
+	# helper method to get a linear difference between a manager's preference and an engineer's skills
+	# this private method has the same slope for someone above a managers preferences (a bonus) as it does
+	# to someone below a manager's preferences (penalty). So if the preference is a 4 for skill x, a stronger 
+	# candidate with an x value of 5 will get a bonus of 1, while a weaker candidate with an x value of 3 
+	# will get a penalty of 1. Because the sum_of_squres method is returning a value that represents a
+	# the distance between preferences and skill levels so that the LOWEST value represents the best candidate,
+	# this method will return a value, and the LOWEST value will once again represent the best candidate
+	# therefore a candidate with -2 is better than a candidate with +2.
+	def linear_dif(e_hash)
+		val = 0
+		e_hash.keys.each do |key|
+			val += (@prefs[key] - e_hash[key]) * @pref_weights[key]
+		end
+		val
+	end
+
+	# helper method that gets a linear difference between a manager's preference and an engineer's skills.
+	# An engineer who has a skill value greater than the manager's preferences will get a bonus, but an engineer
+	# whose skill values are lower than a manager's preferences will recieve a penalty that will carry more weight
+	# than the engineer who outpreforms the preferences. For example: preference is 3, engineer 1 has a value of 4,
+	# and will get a "bonus" of 1. Engineer 2 has a value of 2, and will have a "penalty" of 1.5. The change will be
+	# linear, but different slope depending on if you are up to the preferences of the manager or not
+	def weighted_linear_dif(e_hash)
+		val = 0
+		e_hash.keys.each do |key|
+			if e_hash[key] > @prefs[key]
+				val -= ((e_hash[key] - @prefs[key]) * @pref_weights[key])
+			else
+				val += ((@prefs[key] - e_hash[key]) * @pref_weights[key]) * 1.5
+			end
+		end
+		val
+	end
+
+	# helper method that gets an exponential difference between a manager's preference and an engineer's skills.
+	# this method is similar to the one above, where penalties and bonuses carry different weights, but in this case
+	# a bonus is a linear function of it's distance from the preference, so a if a preference is for a 3, and a 
+	# candidate has a 4, the bonus will be 1. If the candidate has a 5, the bonus will be 2. However for penalties the
+	# amount is an exponential function, so a candidate with a value of 2 will have a penalty of 1 [(3-2) * (3-2)]
+	# multiplied by a weight, while a candidate with a value of 1 will have a penalty of 4 [(3-1) * (3-1)] times a weight
+	def exponential_dif(e_hash)
+		val = 0
+		e_hash.keys.each do |key|
+			if e_hash[key] > @prefs[key]
+				val -= ((e_hash[key] - @prefs[key]) * @pref_weights[key])
+			else
+				val += ((2 ** (e_hash[key] - @prefs[key]) ) * @pref_weights[key])
+			end
+		end
+	end
+
 end
