@@ -280,7 +280,7 @@ class Manager
 		e_hash.keys.each do |key|
 			if e_hash[key] > @prefs[key]
 				val -= ((e_hash[key] - @prefs[key]) * @pref_weights[key])
-			else
+			elsif @prefs[key] > e_hash[key]
 				val += ((@prefs[key] - e_hash[key]) * @pref_weights[key]) * 1.5
 			end
 		end
@@ -298,7 +298,7 @@ class Manager
 		e_hash.keys.each do |key|
 			if e_hash[key] > @prefs[key]
 				val -= ((e_hash[key] - @prefs[key]) * @pref_weights[key])
-			else
+			elsif @prefs[key] > e_hash[key]
 				val += ((2 ** (e_hash[key] - @prefs[key]) ) * @pref_weights[key])
 			end
 		end
