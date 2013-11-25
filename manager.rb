@@ -245,6 +245,9 @@ class Manager
 	# the preference for a manager? engineer with 10 experience would be better in that
 	# category than an engineer with 8 experience, but that's not according to this function
 	# but that could be easily changed by uncommenting the unless... I think
+
+	# linear increase for over
+	# exponential decrease for under
 	def sum_of_squares(e_hash)
 		sum = 0
 		e_hash.keys.each do |key|
