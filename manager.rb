@@ -97,6 +97,117 @@ class Manager
 
 	end
 
+  # choose function using the linear difference
+	def choose_engineers_linear(eng_array)
+		min = min_linaer_dif(eng_array[0].skills, eng_array[1].skills, eng_array[2].skills)
+
+		output = File.open('output.csv', 'a')
+
+		if(min.eql?(eng_array[0].skills))
+			output.write "1,"
+			output.close
+			return eng_array[0]
+		elsif min.eql?(eng_array[1].skills)
+			output.write "2,"
+			output.close
+			return eng_array[1]
+		else
+			output.write "3,"
+			output.close
+			return eng_array[2]
+		end
+	end
+
+	# choose engineers function using the weighted linear method
+	def choose_engineers_weighted(eng_array)
+		min = min_weighted_linear_dif(eng_array[0].skills, eng_array[1].skills, eng_array[2].skills)
+
+		output = File.open('output.csv', 'a')
+
+		if(min.eql?(eng_array[0].skills))
+			output.write "1,"
+			output.close
+			return eng_array[0]
+		elsif min.eql?(eng_array[1].skills)
+			output.write "2,"
+			output.close
+			return eng_array[1]
+		else
+			output.write "3,"
+			output.close
+			return eng_array[2]
+		end
+	end
+
+	# chooses engineers based on the exponential choice function
+	def choose_engineers_exponential(eng_array)
+		min = min_exponential_dif(eng_array[0].skills, eng_array[1].skills, eng_array[2].skills)
+
+		output = File.open('output.csv', 'a')
+
+		if(min.eql?(eng_array[0].skills))
+			output.write "1,"
+			output.close
+			return eng_array[0]
+		elsif min.eql?(eng_array[1].skills)
+			output.write "2,"
+			output.close
+			return eng_array[1]
+		else
+			output.write "3,"
+			output.close
+			return eng_array[2]
+		end
+	end
+
+	# method for choosing the minimum difference in expectation for engineers 
+	# using the linear difference function described in the linear_dif method
+	def min_linaer_dif(e1, e2, e3)
+		result1 = linear_dif(e1)
+		result2 = linear_dif(e2)
+		result3 = linear_dif(e3)
+
+		if(result1 < result2 && result1 < result3)
+			return e1
+		elsif result2 < result1 && result2 < result3
+			return e2
+		else
+			return e3
+		end		
+	end
+
+	# method for choosing the minimum difference in expectation for engineers
+	# using the weighted linear difference function below
+	def min_weighted_linear_dif(e1, e2, e3)
+		result1 = weighted_linear_dif(e1)
+		result2 = weighted_linear_dif(e2)
+		result3 = weighted_linear_dif(e3)
+
+		if(result1 < result2 && result1 < result3)
+			return e1
+		elsif result2 < result1 && result2 < result3
+			return e2
+		else
+			return e3
+		end		
+	end
+
+	# method for choosing the minimum difference in expectation for engineers
+	# using the exponential difference function below
+	def min_exponential_dif(e1, e2, e3)
+		result1 = exponential_dif(e1)
+		result2 = exponential_dif(e2)
+		result3 = exponential_dif(e3)
+
+		if(result1 < result2 && result1 < result3)
+			return e1
+		elsif result2 < result1 && result2 < result3
+			return e2
+		else
+			return e3
+		end	
+	end
+
 	# e#s are hashes / this fcn takes the min of the calculated sos
 	def min_sos(e1, e2, e3)
 		# min sum of squares
@@ -191,6 +302,7 @@ class Manager
 				val += ((2 ** (e_hash[key] - @prefs[key]) ) * @pref_weights[key])
 			end
 		end
+		val
 	end
 
 end
