@@ -386,3 +386,11 @@ puts @m.choose_engineers(eng_bundle_1).skills
 puts "testing the choose method"
 puts @m.min_sos(@e1.skills, @e2.skills, @e3.skills)
 
+puts "looking at the linear difference method"
+puts @m.choose_engineers_linear(eng_bundle_1).skills
+
+puts "looking at the weighted difference method"
+puts @m.choose_engineers_weighted(eng_bundle_1).skills
+
+puts "looking at the exponential difference method"
+puts @m.choose_engineers_exponential(eng_bundle_1).skills
