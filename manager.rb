@@ -177,9 +177,9 @@ class Manager
 		result2 = linear_dif(e2)
 		result3 = linear_dif(e3)
 
-		if(result1 < result2 && result1 < result3)
+		if(result1 <= result2 && result1 <= result3)
 			return e1
-		elsif result2 < result1 && result2 < result3
+		elsif result2 <= result1 && result2 <= result3
 			return e2
 		else
 			return e3
@@ -193,9 +193,9 @@ class Manager
 		result2 = weighted_linear_dif(e2)
 		result3 = weighted_linear_dif(e3)
 
-		if(result1 < result2 && result1 < result3)
+		if(result1 <= result2 && result1 <= result3)
 			return e1
-		elsif result2 < result1 && result2 < result3
+		elsif result2 <= result1 && result2 <= result3
 			return e2
 		else
 			return e3
@@ -209,9 +209,9 @@ class Manager
 		result2 = exponential_dif(e2)
 		result3 = exponential_dif(e3)
 
-		if(result1 < result2 && result1 < result3)
+		if(result1 <= result2 && result1 <= result3)
 			return e1
-		elsif result2 < result1 && result2 < result3
+		elsif result2 <= result1 && result2 <= result3
 			return e2
 		else
 			return e3
@@ -234,11 +234,11 @@ class Manager
 		# output.write "e2's sum of squares is #{result2}\n"
 		# output.write "e3's sum of squares is #{result3}\n"
 
-		if(result1 <= result2 && result1 < result3)
+		if(result1 <= result2 && result1 <= result3)
 			# output.write "Choosing e1 with sos result :: #{result1}\n"
 			# output.close
 			return e1
-		elsif result2 <= result1 && result2 < result3
+		elsif result2 <= result1 && result2 <= result3
 			# output.write "Choosing e2 with sos result :: #{result2}\n"
 			# output.close
 			return e2
