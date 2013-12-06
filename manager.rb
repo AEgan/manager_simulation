@@ -249,7 +249,7 @@ class Manager
 		end
 	end
 
-	#private
+	private
 	# helper method for choose which gets the sum of squares for the hash passed in
 	# for sum of square errors, does it matter of the engineer's skill is greater than 
 	# the preference for a manager? engineer with 10 experience would be better in that
