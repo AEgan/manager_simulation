@@ -234,11 +234,11 @@ class Manager
 		# output.write "e2's sum of squares is #{result2}\n"
 		# output.write "e3's sum of squares is #{result3}\n"
 
-		if(result1 < result2 && result1 < result3)
+		if(result1 <= result2 && result1 < result3)
 			# output.write "Choosing e1 with sos result :: #{result1}\n"
 			# output.close
 			return e1
-		elsif result2 < result1 && result2 < result3
+		elsif result2 <= result1 && result2 < result3
 			# output.write "Choosing e2 with sos result :: #{result2}\n"
 			# output.close
 			return e2
@@ -249,7 +249,7 @@ class Manager
 		end
 	end
 
-	private
+	#private
 	# helper method for choose which gets the sum of squares for the hash passed in
 	# for sum of square errors, does it matter of the engineer's skill is greater than 
 	# the preference for a manager? engineer with 10 experience would be better in that
@@ -261,7 +261,7 @@ class Manager
 	def sum_of_squares(e_hash)
 		sum = 0
 		e_hash.keys.each do |key|
-			sum += ((e_hash[key] - @prefs[key]) ** 2) * @pref_weights[key] unless e_hash[key] > @prefs[key]
+			sum += (((e_hash[key] - @prefs[key]) ** 2) * @pref_weights[key]) unless e_hash[key] > @prefs[key]
 		end
 		sum
 	end

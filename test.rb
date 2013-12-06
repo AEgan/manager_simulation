@@ -48,9 +48,9 @@ end
 # tests engineer names
 def check_engineer_names
 	puts "checking engineer names"
-	# assert_equal @e1.name, "E 1"
-	# assert_equal @e2.name, "E 2"
-	# assert_equal @e3.name, "E 3"
+	assert_equal @e1.name, "1"
+	assert_equal @e2.name, "2"
+	assert_equal @e3.name, "3"
 end
 
 # tests engineer attributes
@@ -429,6 +429,23 @@ def check_weights_positive_or_zero
 	puts "comm passed"
 end
 
+def test_choose_default
+	# @m's preferences are :exp => 5, :prog => 2, :tools => 3, :comm => 2
+	test_e_1 = Engineer.new({:exp => 5, :prog => 2, :tools => 3, :comm => 2},  "1")
+	test_e_2 = Engineer.new({:exp => 1, :prog => 1, :tools => 1, :comm => 1},  "2")
+	test_e_3 = Engineer.new({:exp => 2, :prog => 2, :tools => 2, :comm => 2},  "3")
+	test_eng_bundle = [test_e_1, test_e_2, test_e_3]
+	assert @m.choose_engineers(test_eng_bundle) == test_e_1, "Expected to get #{test_e_1.name} but got #{@m.choose_engineers(test_eng_bundle).name}"
+	# for this method, overqualification does not effect choice, should still get 1
+	test_e_2 = Engineer.new({:exp => 5, :prog => 5, :tools => 2, :comm => 5},  "2")
+	test_eng_bundle = [test_e_1, test_e_2, test_e_3]
+	assert @m.choose_engineers(test_eng_bundle) == test_e_1, "Expected to get #{test_e_1.name} but got #{@m.choose_engineers(test_eng_bundle).name}"
+	test_e_2 = Engineer.new({:exp => 5, :prog => 5, :tools => 5, :comm => 5},  "2")
+	# but if everything is over it will be exact and will be picked
+	test_eng_bundle = [test_e_1, test_e_2, test_e_3]
+	assert @m.choose_engineers(test_eng_bundle) == test_e_1, "Expected to get #{test_e_2.name} but got #{@m.choose_engineers(test_eng_bundle).name}"
+end
+
 check_manager
 check_engineer_names
 check_engineer_exp
@@ -444,15 +461,16 @@ check_engineer_skills_range
 check_engineer_skill_presence
 check_eps
 check_weights_positive_or_zero
+test_choose_default
 
 puts "=============================================="
 puts "looking at choice methods. These are not tests"
 puts "=============================================="
 
-puts "testing the choose_engineers method"
+puts "looking at the choose_engineers method"
 puts @m.choose_engineers(eng_bundle_1).skills
 
-puts "testing the choose method"
+puts "looking at the choose method"
 puts @m.min_sos(@e1.skills, @e2.skills, @e3.skills)
 
 puts "looking at the linear difference method"
