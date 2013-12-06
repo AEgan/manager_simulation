@@ -366,6 +366,28 @@ def check_engineer_skill_presence
 	end
 end
 
+def check_eps
+	eps1 = @m.eps(0.10)
+	eps2 = @m.eps(0.20)
+	eps3 = @m.eps(0.30)
+	eps4 = @m.eps(0.40)
+	eps5 = @m.eps(0.50)
+	eps6 = @m.eps(0.60)
+	eps7 = @m.eps(0.70)
+	eps8 = @m.eps(0.80)
+	eps9 = @m.eps(0.90)
+	assert -0.01 <= eps1 && eps1 <= 0.01, "epsilon function failed, expected to be between -0.01 and 0.01 but was #{eps1}"
+	assert -0.02 <= eps2 && eps2 <= 0.02, "epsilon function failed, expected to be between -0.02 and 0.02 but was #{eps2}"
+	assert -0.03 <= eps3 && eps3 <= 0.03, "epsilon function failed, expected to be between -0.03 and 0.03 but was #{eps3}"
+	assert -0.04 <= eps4 && eps4 <= 0.04, "epsilon function failed, expected to be between -0.04 and 0.04 but was #{eps4}"
+	assert -0.05 <= eps5 && eps5 <= 0.05, "epsilon function failed, expected to be between -0.05 and 0.05 but was #{eps5}"
+	assert -0.06 <= eps6 && eps6 <= 0.06, "epsilon function failed, expected to be between -0.06 and 0.06 but was #{eps6}"
+	assert -0.07 <= eps7 && eps7 <= 0.07, "epsilon function failed, expected to be between -0.07 and 0.07 but was #{eps7}"
+	assert -0.08 <= eps8 && eps8 <= 0.08, "epsilon function failed, expected to be between -0.08 and 0.08 but was #{eps8}"
+	assert -0.09 <= eps9 && eps9 <= 0.09, "epsilon function failed, expected to be between -0.09 and 0.09 but was #{eps9}"
+	puts "eps tests passed"
+end
+
 check_manager
 check_engineer_names
 check_engineer_exp
@@ -379,6 +401,11 @@ check_prefs_hash_complete
 check_weight_hash_complete
 check_engineer_skills_range
 check_engineer_skill_presence
+check_eps
+
+puts "=============================================="
+puts "looking at choice methods. These are not tests"
+puts "=============================================="
 
 puts "testing the choose_engineers method"
 puts @m.choose_engineers(eng_bundle_1).skills
