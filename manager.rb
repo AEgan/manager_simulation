@@ -47,11 +47,21 @@ class Manager
 			raise Exception.new("Manager must have :xnot, :ynot, :znot, :wnot as keys for weights") if weights_hash[key].nil?
 		end
 
-
+		# applies weights
+		# sets weights to 0 if epsilon makes them negative
+		# sets weights to 1 if epsilon makes them greater than 1
 		@x = weights_hash[:xnot] + eps(weights_hash[:xnot])
+		@x = 0 if @x < 0
+		@x = 1 if @x > 1
 		@y = weights_hash[:ynot] + eps(weights_hash[:ynot])
+		@y = 0 if @y < 0
+		@y = 1 if @y > 1
 		@z = weights_hash[:znot] + eps(weights_hash[:znot])
+		@z = 0 if @z < 0
+		@z = 1 if @z > 1
 		@w = weights_hash[:wnot] + eps(weights_hash[:wnot])
+		@w = 0 if @w < 0
+		@w = 1 if @w > 1
 		@name = "M #{i}"
 
 		# made them exp prof tools and comm to be able to access them easily
@@ -67,9 +77,9 @@ class Manager
 	# epsilon function
 	def eps(num)
 		prng = Random.new
-		@change = 0.10 * num
-		@negchange = 0.10 * num * -1
-		return prng.rand(@negchange..@change)
+		change = 0.10 * num
+		negchange = 0.10 * num * -1
+		return prng.rand(negchange..change)
 	end
 
 	# choose method passing in engineer objects
@@ -167,9 +177,9 @@ class Manager
 		result2 = linear_dif(e2)
 		result3 = linear_dif(e3)
 
-		if(result1 < result2 && result1 < result3)
+		if(result1 <= result2 && result1 <= result3)
 			return e1
-		elsif result2 < result1 && result2 < result3
+		elsif result2 <= result1 && result2 <= result3
 			return e2
 		else
 			return e3
@@ -183,9 +193,9 @@ class Manager
 		result2 = weighted_linear_dif(e2)
 		result3 = weighted_linear_dif(e3)
 
-		if(result1 < result2 && result1 < result3)
+		if(result1 <= result2 && result1 <= result3)
 			return e1
-		elsif result2 < result1 && result2 < result3
+		elsif result2 <= result1 && result2 <= result3
 			return e2
 		else
 			return e3
@@ -199,9 +209,9 @@ class Manager
 		result2 = exponential_dif(e2)
 		result3 = exponential_dif(e3)
 
-		if(result1 < result2 && result1 < result3)
+		if(result1 <= result2 && result1 <= result3)
 			return e1
-		elsif result2 < result1 && result2 < result3
+		elsif result2 <= result1 && result2 <= result3
 			return e2
 		else
 			return e3
@@ -224,11 +234,11 @@ class Manager
 		# output.write "e2's sum of squares is #{result2}\n"
 		# output.write "e3's sum of squares is #{result3}\n"
 
-		if(result1 < result2 && result1 < result3)
+		if(result1 <= result2 && result1 <= result3)
 			# output.write "Choosing e1 with sos result :: #{result1}\n"
 			# output.close
 			return e1
-		elsif result2 < result1 && result2 < result3
+		elsif result2 <= result1 && result2 <= result3
 			# output.write "Choosing e2 with sos result :: #{result2}\n"
 			# output.close
 			return e2
@@ -251,7 +261,7 @@ class Manager
 	def sum_of_squares(e_hash)
 		sum = 0
 		e_hash.keys.each do |key|
-			sum += ((e_hash[key] - @prefs[key]) ** 2) * @pref_weights[key] unless e_hash[key] > @prefs[key]
+			sum += (((e_hash[key] - @prefs[key]) ** 2) * @pref_weights[key]) unless e_hash[key] > @prefs[key]
 		end
 		sum
 	end
