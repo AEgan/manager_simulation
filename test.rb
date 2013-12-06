@@ -388,6 +388,47 @@ def check_eps
 	puts "eps tests passed"
 end
 
+# checks to see if weights are positive or zero, can not be negative
+def check_weights_positive_or_zero
+	# tests 10 times for each, testing 0 three times each loop as well 
+	10.times do
+		testManager1 = Manager.new({:exp => 1, :prog => 2, :tools => 3, :comm => 2}, 
+			{:xnot => 1, :ynot => 0, :znot => 0, :wnot => 0}, "prof h")
+		deny testManager1.pref_weights[:exp] > 1, "exp weight should be between 0 and 1 but is #{testManager1.pref_weights[:exp]} "
+		deny testManager1.pref_weights[:prog] < 0, "prog weight should be between 0 and 1 but is #{testManager1.pref_weights[:prog]} "
+		deny testManager1.pref_weights[:tools] < 0, "tools weight should be between 0 and 1 but is #{testManager1.pref_weights[:tools]} "
+		deny testManager1.pref_weights[:comm] < 0, "comm weight should be between 0 and 1 but is #{testManager1.pref_weights[:comm]} "
+	end
+	puts "exp passed"
+	10.times do
+		testManager1 = Manager.new({:exp => 1, :prog => 2, :tools => 3, :comm => 2}, 
+			{:xnot => 0, :ynot => 1, :znot => 0, :wnot => 0}, "prof h")
+		deny testManager1.pref_weights[:exp] < 0, "exp weight should be between 0 and 1 but is #{testManager1.pref_weights[:exp]} "
+		deny testManager1.pref_weights[:prog] > 1, "prog weight should be between 0 and 1 but is #{testManager1.pref_weights[:prog]} "
+		deny testManager1.pref_weights[:tools] < 0, "tools weight should be between 0 and 1 but is #{testManager1.pref_weights[:tools]} "
+		deny testManager1.pref_weights[:comm] < 0, "comm weight should be between 0 and 1 but is #{testManager1.pref_weights[:comm]} "
+	end
+	puts "prog passed"
+	10.times do
+		testManager1 = Manager.new({:exp => 1, :prog => 2, :tools => 3, :comm => 2}, 
+			{:xnot => 0, :ynot => 0, :znot => 1, :wnot => 0}, "prof h")
+		deny testManager1.pref_weights[:exp] < 0, "exp weight should be between 0 and 1 but is #{testManager1.pref_weights[:exp]} "
+		deny testManager1.pref_weights[:prog] < 0, "prog weight should be between 0 and 1 but is #{testManager1.pref_weights[:prog]} "
+		deny testManager1.pref_weights[:tools] > 1, "tools weight should be between 0 and 1 but is #{testManager1.pref_weights[:tools]} "
+		deny testManager1.pref_weights[:comm] < 0, "comm weight should be between 0 and 1 but is #{testManager1.pref_weights[:comm]} "
+	end
+	puts "tools passed"
+	10.times do
+		testManager1 = Manager.new({:exp => 1, :prog => 2, :tools => 3, :comm => 2}, 
+			{:xnot => 0, :ynot => 0, :znot => 0, :wnot => 1}, "prof h")
+		deny testManager1.pref_weights[:exp] < 0, "exp weight should be between 0 and 1 but is #{testManager1.pref_weights[:exp]} "
+		deny testManager1.pref_weights[:prog] < 0, "prog weight should be between 0 and 1 but is #{testManager1.pref_weights[:prog]} "
+		deny testManager1.pref_weights[:tools] < 0, "tools weight should be between 0 and 1 but is #{testManager1.pref_weights[:tools]} "
+		deny testManager1.pref_weights[:comm] > 1, "comm weight should be between 0 and 1 but is #{testManager1.pref_weights[:comm]} "
+	end
+	puts "comm passed"
+end
+
 check_manager
 check_engineer_names
 check_engineer_exp
@@ -402,6 +443,7 @@ check_weight_hash_complete
 check_engineer_skills_range
 check_engineer_skill_presence
 check_eps
+check_weights_positive_or_zero
 
 puts "=============================================="
 puts "looking at choice methods. These are not tests"

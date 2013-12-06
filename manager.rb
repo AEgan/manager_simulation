@@ -47,11 +47,21 @@ class Manager
 			raise Exception.new("Manager must have :xnot, :ynot, :znot, :wnot as keys for weights") if weights_hash[key].nil?
 		end
 
-
+		# applies weights
+		# sets weights to 0 if epsilon makes them negative
+		# sets weights to 1 if epsilon makes them greater than 1
 		@x = weights_hash[:xnot] + eps(weights_hash[:xnot])
+		@x = 0 if @x < 0
+		@x = 1 if @x > 1
 		@y = weights_hash[:ynot] + eps(weights_hash[:ynot])
+		@y = 0 if @y < 0
+		@y = 1 if @y > 1
 		@z = weights_hash[:znot] + eps(weights_hash[:znot])
+		@z = 0 if @z < 0
+		@z = 1 if @z > 1
 		@w = weights_hash[:wnot] + eps(weights_hash[:wnot])
+		@w = 0 if @w < 0
+		@w = 1 if @w > 1
 		@name = "M #{i}"
 
 		# made them exp prof tools and comm to be able to access them easily
@@ -67,9 +77,9 @@ class Manager
 	# epsilon function
 	def eps(num)
 		prng = Random.new
-		@change = 0.10 * num
-		@negchange = 0.10 * num * -1
-		return prng.rand(@negchange..@change)
+		change = 0.10 * num
+		negchange = 0.10 * num * -1
+		return prng.rand(negchange..change)
 	end
 
 	# choose method passing in engineer objects
