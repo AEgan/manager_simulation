@@ -48,9 +48,9 @@ end
 # tests engineer names
 def check_engineer_names
 	puts "checking engineer names"
-	# assert_equal @e1.name, "E 1"
-	# assert_equal @e2.name, "E 2"
-	# assert_equal @e3.name, "E 3"
+	assert_equal @e1.name, "1"
+	assert_equal @e2.name, "2"
+	assert_equal @e3.name, "3"
 end
 
 # tests engineer attributes
@@ -366,6 +366,86 @@ def check_engineer_skill_presence
 	end
 end
 
+def check_eps
+	eps1 = @m.eps(0.10)
+	eps2 = @m.eps(0.20)
+	eps3 = @m.eps(0.30)
+	eps4 = @m.eps(0.40)
+	eps5 = @m.eps(0.50)
+	eps6 = @m.eps(0.60)
+	eps7 = @m.eps(0.70)
+	eps8 = @m.eps(0.80)
+	eps9 = @m.eps(0.90)
+	assert -0.01 <= eps1 && eps1 <= 0.01, "epsilon function failed, expected to be between -0.01 and 0.01 but was #{eps1}"
+	assert -0.02 <= eps2 && eps2 <= 0.02, "epsilon function failed, expected to be between -0.02 and 0.02 but was #{eps2}"
+	assert -0.03 <= eps3 && eps3 <= 0.03, "epsilon function failed, expected to be between -0.03 and 0.03 but was #{eps3}"
+	assert -0.04 <= eps4 && eps4 <= 0.04, "epsilon function failed, expected to be between -0.04 and 0.04 but was #{eps4}"
+	assert -0.05 <= eps5 && eps5 <= 0.05, "epsilon function failed, expected to be between -0.05 and 0.05 but was #{eps5}"
+	assert -0.06 <= eps6 && eps6 <= 0.06, "epsilon function failed, expected to be between -0.06 and 0.06 but was #{eps6}"
+	assert -0.07 <= eps7 && eps7 <= 0.07, "epsilon function failed, expected to be between -0.07 and 0.07 but was #{eps7}"
+	assert -0.08 <= eps8 && eps8 <= 0.08, "epsilon function failed, expected to be between -0.08 and 0.08 but was #{eps8}"
+	assert -0.09 <= eps9 && eps9 <= 0.09, "epsilon function failed, expected to be between -0.09 and 0.09 but was #{eps9}"
+	puts "eps tests passed"
+end
+
+# checks to see if weights are positive or zero, can not be negative
+def check_weights_positive_or_zero
+	# tests 10 times for each, testing 0 three times each loop as well 
+	10.times do
+		testManager1 = Manager.new({:exp => 1, :prog => 2, :tools => 3, :comm => 2}, 
+			{:xnot => 1, :ynot => 0, :znot => 0, :wnot => 0}, "prof h")
+		deny testManager1.pref_weights[:exp] > 1, "exp weight should be between 0 and 1 but is #{testManager1.pref_weights[:exp]} "
+		deny testManager1.pref_weights[:prog] < 0, "prog weight should be between 0 and 1 but is #{testManager1.pref_weights[:prog]} "
+		deny testManager1.pref_weights[:tools] < 0, "tools weight should be between 0 and 1 but is #{testManager1.pref_weights[:tools]} "
+		deny testManager1.pref_weights[:comm] < 0, "comm weight should be between 0 and 1 but is #{testManager1.pref_weights[:comm]} "
+	end
+	puts "exp passed"
+	10.times do
+		testManager1 = Manager.new({:exp => 1, :prog => 2, :tools => 3, :comm => 2}, 
+			{:xnot => 0, :ynot => 1, :znot => 0, :wnot => 0}, "prof h")
+		deny testManager1.pref_weights[:exp] < 0, "exp weight should be between 0 and 1 but is #{testManager1.pref_weights[:exp]} "
+		deny testManager1.pref_weights[:prog] > 1, "prog weight should be between 0 and 1 but is #{testManager1.pref_weights[:prog]} "
+		deny testManager1.pref_weights[:tools] < 0, "tools weight should be between 0 and 1 but is #{testManager1.pref_weights[:tools]} "
+		deny testManager1.pref_weights[:comm] < 0, "comm weight should be between 0 and 1 but is #{testManager1.pref_weights[:comm]} "
+	end
+	puts "prog passed"
+	10.times do
+		testManager1 = Manager.new({:exp => 1, :prog => 2, :tools => 3, :comm => 2}, 
+			{:xnot => 0, :ynot => 0, :znot => 1, :wnot => 0}, "prof h")
+		deny testManager1.pref_weights[:exp] < 0, "exp weight should be between 0 and 1 but is #{testManager1.pref_weights[:exp]} "
+		deny testManager1.pref_weights[:prog] < 0, "prog weight should be between 0 and 1 but is #{testManager1.pref_weights[:prog]} "
+		deny testManager1.pref_weights[:tools] > 1, "tools weight should be between 0 and 1 but is #{testManager1.pref_weights[:tools]} "
+		deny testManager1.pref_weights[:comm] < 0, "comm weight should be between 0 and 1 but is #{testManager1.pref_weights[:comm]} "
+	end
+	puts "tools passed"
+	10.times do
+		testManager1 = Manager.new({:exp => 1, :prog => 2, :tools => 3, :comm => 2}, 
+			{:xnot => 0, :ynot => 0, :znot => 0, :wnot => 1}, "prof h")
+		deny testManager1.pref_weights[:exp] < 0, "exp weight should be between 0 and 1 but is #{testManager1.pref_weights[:exp]} "
+		deny testManager1.pref_weights[:prog] < 0, "prog weight should be between 0 and 1 but is #{testManager1.pref_weights[:prog]} "
+		deny testManager1.pref_weights[:tools] < 0, "tools weight should be between 0 and 1 but is #{testManager1.pref_weights[:tools]} "
+		deny testManager1.pref_weights[:comm] > 1, "comm weight should be between 0 and 1 but is #{testManager1.pref_weights[:comm]} "
+	end
+	puts "comm passed"
+end
+
+def test_choose_default
+	# @m's preferences are :exp => 5, :prog => 2, :tools => 3, :comm => 2
+	test_e_1 = Engineer.new({:exp => 5, :prog => 2, :tools => 3, :comm => 2},  "1")
+	test_e_2 = Engineer.new({:exp => 1, :prog => 1, :tools => 1, :comm => 1},  "2")
+	test_e_3 = Engineer.new({:exp => 2, :prog => 2, :tools => 2, :comm => 2},  "3")
+	test_eng_bundle = [test_e_1, test_e_2, test_e_3]
+	assert @m.choose_engineers(test_eng_bundle) == test_e_1, "Expected to get #{test_e_1.name} but got #{@m.choose_engineers(test_eng_bundle).name}"
+	# for this method, overqualification does not effect choice, should still get 1
+	test_e_2 = Engineer.new({:exp => 5, :prog => 5, :tools => 2, :comm => 5},  "2")
+	test_eng_bundle = [test_e_1, test_e_2, test_e_3]
+	assert @m.choose_engineers(test_eng_bundle) == test_e_1, "Expected to get #{test_e_1.name} but got #{@m.choose_engineers(test_eng_bundle).name}"
+	test_e_2 = Engineer.new({:exp => 5, :prog => 5, :tools => 5, :comm => 5},  "2")
+	# but if everything is over it will be exact and will be picked
+	test_eng_bundle = [test_e_1, test_e_2, test_e_3]
+	assert @m.choose_engineers(test_eng_bundle) == test_e_1, "Expected to get #{test_e_2.name} but got #{@m.choose_engineers(test_eng_bundle).name}"
+end
+
 check_manager
 check_engineer_names
 check_engineer_exp
@@ -379,10 +459,25 @@ check_prefs_hash_complete
 check_weight_hash_complete
 check_engineer_skills_range
 check_engineer_skill_presence
+check_eps
+check_weights_positive_or_zero
+test_choose_default
 
-puts "testing the choose_engineers method"
+puts "=============================================="
+puts "looking at choice methods. These are not tests"
+puts "=============================================="
+
+puts "looking at the choose_engineers method"
 puts @m.choose_engineers(eng_bundle_1).skills
 
-puts "testing the choose method"
+puts "looking at the choose method"
 puts @m.min_sos(@e1.skills, @e2.skills, @e3.skills)
 
+puts "looking at the linear difference method"
+puts @m.choose_engineers_linear(eng_bundle_1).skills
+
+puts "looking at the weighted difference method"
+puts @m.choose_engineers_weighted(eng_bundle_1).skills
+
+puts "looking at the exponential difference method"
+puts @m.choose_engineers_exponential(eng_bundle_1).skills
