@@ -1,7 +1,7 @@
 require_relative 'engineer.rb'
 require_relative 'manager.rb'
 
-# new solution, get the output to be formatted correctly
+# to do -- get the output to be formatted correctly
 
 # managers
 @m1 = Manager.new({:exp => 5, :prog => 3, :tools => 3, :comm => 3}, 
@@ -14,6 +14,8 @@ require_relative 'manager.rb'
 				  {:xnot => 0.55, :ynot => 0.15, :znot => 0.15, :wnot => 0.15}, "prof k")
 @m5 = Manager.new({:exp => 5, :prog => 3, :tools => 1, :comm => 1}, 
 				  {:xnot => 0.55, :ynot => 0.15, :znot => 0.15, :wnot => 0.15}, "prof l")
+
+man_arr = [@m1, @m2, @m3, @m4, @m5]
 
 # engineers
 @e1 =  Engineer.new({:exp => 1, :prog => 1, :tools => 5, :comm => 3},  "1")
@@ -56,45 +58,35 @@ eng_bundle_18 = [@e7,	@e1,  @e5]
 eng_bundle_19 = [@e10,	@e4,  @e9]
 eng_bundle_20 = [@e17,	@e16,  @e3]
 
-@m1.choose_engineers(eng_bundle_1 )
-@m1.choose_engineers(eng_bundle_2 )
-@m1.choose_engineers(eng_bundle_3 )
-@m1.choose_engineers(eng_bundle_4 )
-@m1.choose_engineers(eng_bundle_5 )
-@m1.choose_engineers(eng_bundle_6 )
-@m1.choose_engineers(eng_bundle_7 )
-@m1.choose_engineers(eng_bundle_8 )
-@m1.choose_engineers(eng_bundle_9 )
-@m1.choose_engineers(eng_bundle_10)
-@m1.choose_engineers(eng_bundle_11)
-@m1.choose_engineers(eng_bundle_12)
-@m1.choose_engineers(eng_bundle_13)
-@m1.choose_engineers(eng_bundle_14)
-@m1.choose_engineers(eng_bundle_15)
-@m1.choose_engineers(eng_bundle_16)
-@m1.choose_engineers(eng_bundle_17)
-@m1.choose_engineers(eng_bundle_18)
-@m1.choose_engineers(eng_bundle_19)
-@m1.choose_engineers(eng_bundle_20)
+choice_arr =[ eng_bundle_1,
+			 eng_bundle_2,
+			 eng_bundle_3,
+			 eng_bundle_4,
+			 eng_bundle_5,
+			 eng_bundle_6,
+			 eng_bundle_7,
+			 eng_bundle_8,
+			 eng_bundle_9,
+			 eng_bundle_10,
+			 eng_bundle_11,
+			 eng_bundle_12,
+			 eng_bundle_13,
+			 eng_bundle_14,
+			 eng_bundle_15,
+			 eng_bundle_16,
+			 eng_bundle_17,
+			 eng_bundle_18,
+			 eng_bundle_19,
+			 eng_bundle_20 ]
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+choice_arr.each do |choice|
+	man_arr.each do |manager|
+		manager.choose_engineers(choice)
+	end
+	output = File.open('output.csv', 'a')
+	output.write "\n"
+	output.close
+end
 
 
 
