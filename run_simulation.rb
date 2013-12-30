@@ -1,8 +1,6 @@
 require_relative 'engineer.rb'
 require_relative 'manager.rb'
 
-# to do -- get the output to be formatted correctly
-
 # managers
 @m1 = Manager.new({:exp => 5, :prog => 3, :tools => 3, :comm => 3}, 
 				  {:xnot => 0.55, :ynot => 0.15, :znot => 0.15, :wnot => 0.15}, "prof h")
