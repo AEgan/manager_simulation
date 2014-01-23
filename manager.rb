@@ -16,70 +16,75 @@ class Manager
 
 		# weights must be between 0 and 1, checking here unless there is a better
 		# way to do it. Also checking that they add to 1
-		sum = 0
-		weights_hash.keys.each do |key|
-			if(weights_hash[key] < 0 || weights_hash[key] > 1)
-				raise Exception.new("Manager weights must be between 0 and 1")
-			else
-				sum += weights_hash[key]
-			end
-		end
+		# sum = 0
+		# weights_hash.keys.each do |key|
+		# 	if(weights_hash[key] < 0 || weights_hash[key] > 1)
+		# 		raise Exception.new("Manager weights must be between 0 and 1")
+		# 	else
+		# 		sum += weights_hash[key]
+		# 	end
+		# end
 
-		# make sure the sum adds to 1
-		if sum != 1
-			raise Exception.new("Manager weights must add up to 1")
-		end
+		# # make sure the sum adds to 1
+		# if sum != 1
+		# 	raise Exception.new("Manager weights must add up to 1")
+		# end
 
-		# preferences have to be on a 1 to 5 scale, so I'm checking them here
-		pref_hash.keys.each do |key|
-			if(pref_hash[key] < 1 || pref_hash[key] > 5)
-				raise Exception.new("Manager preferences must be on a scale from 1 to 5")
-			end
-		end
+		# # preferences have to be on a 1 to 5 scale, so I'm checking them here
+		# pref_hash.keys.each do |key|
+		# 	if(pref_hash[key] < 1 || pref_hash[key] > 5)
+		# 		raise Exception.new("Manager preferences must be on a scale from 1 to 5")
+		# 	end
+		# end
 
-		# make sure pref hash has all the keys we need it to
-		[:exp, :prog, :tools, :comm].each do |key|
-			raise Exception.new("Manager must have :exp, :prog, :tools, and :comm for preferences") if pref_hash[key].nil?
-		end
+		# # make sure pref hash has all the keys we need it to
+		# [:exp, :prog, :tools, :comm].each do |key|
+		# 	raise Exception.new("Manager must have :exp, :prog, :tools, and :comm for preferences") if pref_hash[key].nil?
+		# end
 
-		# make sure the weight hash has all the keys we need it to
-		[:xnot, :ynot, :znot, :wnot].each do |key|
-			raise Exception.new("Manager must have :xnot, :ynot, :znot, :wnot as keys for weights") if weights_hash[key].nil?
-		end
+		# # make sure the weight hash has all the keys we need it to
+		# [:xnot, :ynot, :znot, :wnot].each do |key|
+		# 	raise Exception.new("Manager must have :xnot, :ynot, :znot, :wnot as keys for weights") if weights_hash[key].nil?
+		# end
 
 		# applies weights
 		# sets weights to 0 if epsilon makes them negative
 		# sets weights to 1 if epsilon makes them greater than 1
-		@x = weights_hash[:xnot] + eps(weights_hash[:xnot])
-		@x = 0 if @x < 0
-		@x = 1 if @x > 1
-		@y = weights_hash[:ynot] + eps(weights_hash[:ynot])
-		@y = 0 if @y < 0
-		@y = 1 if @y > 1
-		@z = weights_hash[:znot] + eps(weights_hash[:znot])
-		@z = 0 if @z < 0
-		@z = 1 if @z > 1
-		@w = weights_hash[:wnot] + eps(weights_hash[:wnot])
-		@w = 0 if @w < 0
-		@w = 1 if @w > 1
+		@pref_weights = Hash.new
+		if(key_check([:xnot, :ynot, :znot, :wnot], weights_hash))
+			@x = weights_hash[:xnot] + eps(weights_hash[:xnot])
+			@x = 0 if @x < 0
+			@x = 1 if @x > 1
+			@y = weights_hash[:ynot] + eps(weights_hash[:ynot])
+			@y = 0 if @y < 0
+			@y = 1 if @y > 1
+			@z = weights_hash[:znot] + eps(weights_hash[:znot])
+			@z = 0 if @z < 0
+			@z = 1 if @z > 1
+			@w = weights_hash[:wnot] + eps(weights_hash[:wnot])
+			@w = 0 if @w < 0
+			@w = 1 if @w > 1
+			@pref_weights[:exp] = @x
+			@pref_weights[:prog] = @y
+			@pref_weights[:tools] = @z
+			@pref_weights[:comm] = @w
+		end
 		@name = "M #{i}"
-
 		# made them exp prof tools and comm to be able to access them easily
 		# in the choose function
-		@pref_weights = Hash.new
-		@pref_weights[:exp] = @x
-		@pref_weights[:prog] = @y
-		@pref_weights[:tools] = @z
-		@pref_weights[:comm] = @w
 		@prefs = pref_hash
 	end
 
 	# epsilon function
 	def eps(num)
-		prng = Random.new
-		change = 0.10 * num
-		negchange = 0.10 * num * -1
-		return prng.rand(negchange..change)
+		if num < 0
+			0
+		else
+			prng = Random.new
+			change = 0.10 * num
+			negchange = 0.10 * num * -1
+			return prng.rand(negchange.round(4)..change.round(4))
+		end
 	end
 
 	# choose method passing in engineer objects
@@ -249,7 +254,55 @@ class Manager
 		end
 	end
 
+	# a valid method to check to make sure the managers that are created are valid
+	def valid?
+		return validate_weight_hash && validate_pref_hash && key_check([:exp, :prog, :tools, :comm], @prefs) && key_check([:xnot, :ynot, :znot, :wnot], @pref_weights)
+	end
+
 	private
+
+	# VALIDATION HELPERS
+
+	# validates that the weight hash sums to 1, none of the individual keys are below zero or above 1
+	# this is for validation on create, because randomness of epsilon will not sum up to one. For validation
+	# in the 'valid?' method use the one below
+	def validate_weight_hash_on_create
+		sum = 0
+		@pref_weights.keys.each do |key|
+			if(0 < @pref_weights[key] || @pref_weights[key] < 1)
+				return false
+			else
+				sum += @pref_weights[key]
+			end
+		end
+		sum == 1
+	end
+
+	# validates each key in the weight hash maps to a value between 0 and 1. This one is for the valid? method, not
+	# the creation checks becuase randomness of epsilon will make it so that values will not sum to 1
+	def validate_weight_hash
+		@pref_weights.keys.each do |key|
+			return false if(0 < @pref_weights[key] || @pref_weights[key] < 1)
+		end
+		true
+	end
+
+	# validates that the preferences in the pref hash are between 1 and 5. This can be used in the initialize method as well as the
+	# valid? method
+	def validate_pref_hash
+		@prefs.keys.each do |key|
+			return false if (1 < @prefs[key] || @prefs[key] < 5)
+		end
+		true
+	end
+
+	# a method to check that all the keys are in the hash
+	def key_check(keys, hash)
+		keys.each do |key|
+			return false if hash[key].nil?
+		end
+	end
+
 	# helper method for choose which gets the sum of squares for the hash passed in
 	# for sum of square errors, does it matter of the engineer's skill is greater than 
 	# the preference for a manager? engineer with 10 experience would be better in that
